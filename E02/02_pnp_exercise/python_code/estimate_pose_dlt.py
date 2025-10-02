@@ -13,10 +13,26 @@ def estimatePoseDLT(p, P, K):
     # where R is a rotation matrix. M_tilde encodes the transformation 
     # that maps points from the world frame to the camera frame
 
-    pass
+    
 
     # Convert 2D to normalized coordinates
     # TODO: Your code here
+    
+    P_3d = np.hstack((P, np.ones((P.shape[0], 1))))
+    # Stacked 3D Points in World Frame
+    print("3D Points in World Frame:")
+    print(P_3d)
+    
+    p_2d = np.hstack((p, np.ones((p.shape[0], 1))))
+    # Stacked 2D Points in Image Frame
+    print("2D Points in Image Frame:")
+    print(p_2d)
+    
+    p_2d_normalized = np.linalg.inv(K) @ p_2d.T
+    print("Normalized 2D Points in Image Frame:")
+    print(p_2d_normalized.T)
+    
+    pass
 
     # Build measurement matrix Q
     # TODO: Your code here

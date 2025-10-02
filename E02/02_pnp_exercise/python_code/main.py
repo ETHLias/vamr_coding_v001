@@ -15,16 +15,35 @@ def main():
     #    - the camera matrix
     #    - detected corners
     image_idx = 1
-    undist_img_path = "../data/images_undistorted/img_%04d.jpg" % image_idx
+    undist_img_path = "02_pnp_exercise/data/images_undistorted/img_%04d.jpg" % image_idx
     undist_img = cv2.imread(undist_img_path, cv2.IMREAD_GRAYSCALE)
 
-    K = np.loadtxt("../data/K.txt")
-    p_W_corners = 0.01 * np.loadtxt("../data/p_W_corners.txt", delimiter = ",")
+    K = np.loadtxt("02_pnp_exercise/data/K.txt")
+    p_W_corners = 0.01 * np.loadtxt("02_pnp_exercise/data/p_W_corners.txt", delimiter = ",")
     num_corners = p_W_corners.shape[0]
 
     # Load the 2D projected points that have been detected on the
     # undistorted image into an array
     # TODO: Your code here
+    
+    # 2D_projection Coordinates file path
+    proj_2d_path = "02_pnp_exercise/data/detected_corners.txt"
+    
+    with open(proj_2d_path, "r") as f:
+        # Read the specific line for the image index
+        lines = f.readlines()[image_idx]
+    
+    # Convert the line into a numpy array
+    values = np.fromstring(lines, sep=' ')
+    
+    # Reshape the array into (num_corners, 2)
+    pts_2d = values.reshape(-1, 2)
+    #print(pts_2d)
+
+    #print(undist_img.shape)
+    #print(undist_img)
+    pass
+    estimatePoseDLT(pts_2d, p_W_corners, K)
     
     # Now that we have the 2D <-> 3D correspondances let's find the camera pose
     # with respect to the world using the DLT algorithm
