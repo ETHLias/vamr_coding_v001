@@ -71,16 +71,25 @@ def main():
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.set_box_aspect([1,1,1])  # Equal aspect ratio
-    plt.show()
+    
+    
 
     # Position of the camera given in the world frame
     # TODO: Your code here
+    # Extract R and t from M_tilde
+    R = M_tilde[:, :3]
+    t = M_tilde[:, 3]
     
+    # Camera position in world frame
+    pos = -R.T @ t
+    
+    # Camera orientation in world frame
+    rotMat = R.T
 
     #Remove this comment if you have completed the code until here
-    #drawCamera(ax, pos, rotMat, length_scale = 0.1, head_size = 10)
-    #plt.show()
+    drawCamera(ax, pos, rotMat, length_scale = 0.1, head_size = 10)
+    #ax.set_box_aspect([1,1,1])  # Equal aspect ratio
+    plt.show()
     
 
 
