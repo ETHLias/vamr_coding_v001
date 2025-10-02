@@ -42,38 +42,46 @@ def main():
 
     #print(undist_img.shape)
     #print(undist_img)
-    pass
-    estimatePoseDLT(pts_2d, p_W_corners, K)
+    
     
     # Now that we have the 2D <-> 3D correspondances let's find the camera pose
     # with respect to the world using the DLT algorithm
     # TODO: Your code here
+    M_tilde = estimatePoseDLT(pts_2d, p_W_corners, K)
 
     # Plot the original 2D points and the reprojected points on the image
     # TODO: Your code here
+    p_reproj = reprojectPoints(p_W_corners, M_tilde, K)
     
-    """ Remove this comment if you have completed the code until here
+    
+    # Remove this comment if you have completed the code until here
     plt.figure()
     plt.imshow(undist_img, cmap = "gray")
     plt.scatter(pts_2d[:,0], pts_2d[:,1], marker = 'o')
     plt.scatter(p_reproj[:,0], p_reproj[:,1], marker = '+')
-    """
+    
+    
 
     # Make a 3D plot containing the corner positions and a visualization
     # of the camera axis
-    """ Remove this comment if you have completed the code until here
+    # Remove this comment if you have completed the code until here
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     ax.scatter(p_W_corners[:,0], p_W_corners[:,1], p_W_corners[:,2])
-    """
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.set_box_aspect([1,1,1])  # Equal aspect ratio
+    plt.show()
 
     # Position of the camera given in the world frame
     # TODO: Your code here
+    
 
-    """ Remove this comment if you have completed the code until here
-    drawCamera(ax, pos, rotMat, length_scale = 0.1, head_size = 10)
-    plt.show()
-    """
+    #Remove this comment if you have completed the code until here
+    #drawCamera(ax, pos, rotMat, length_scale = 0.1, head_size = 10)
+    #plt.show()
+    
 
 
 def main_video():

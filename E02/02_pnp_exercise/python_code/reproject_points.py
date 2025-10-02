@@ -9,5 +9,18 @@ def reprojectPoints(P, M_tilde, K):
     #
     # Returns [n x 2] coordinates of the reprojected 2d points
 
-    pass
+    
     # TODO: Your code here
+    # Homogenize 3D points
+    P_h = np.hstack((P, np.ones((P.shape[0], 1))))    # [X Y Z 1]
+    
+    # Project into camera
+    p_h = (K @ M_tilde) @ P_h.T   # shape (3,n)
+    
+    # Normalize by depth (last row)
+    p_h /= p_h[2, :]
+    
+    # Return in [n x 2]
+    return p_h[:2, :].T
+
+
