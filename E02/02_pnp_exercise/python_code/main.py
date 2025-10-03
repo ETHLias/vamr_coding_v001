@@ -94,26 +94,46 @@ def main():
 
 
 def main_video():
-    K = np.loadtxt("../data/K.txt")
-    p_W_corners = 0.01 * np.loadtxt("../data/p_W_corners.txt", delimiter = ",")
+    K = np.loadtxt("02_pnp_exercise/data/K.txt")
+    p_W_corners = 0.01 * np.loadtxt("02_pnp_exercise/data/p_W_corners.txt", delimiter = ",")
     num_corners = p_W_corners.shape[0]
 
-    all_pts_2d = np.loadtxt("../data/detected_corners.txt")
+    all_pts_2d = np.loadtxt("02_pnp_exercise/data/detected_corners.txt")
     num_images = all_pts_2d.shape[0]
     translations = np.zeros((num_images, 3))
     quaternions = np.zeros((num_images, 4))
     
     # TODO: Your code here
+    M_tildes = []
+    for i in range(num_images):
+        pts_2d = all_pts_2d[i].reshape(-1, 2)
+        M_tilde = estimatePoseDLT(pts_2d, p_W_corners, K)
+        M_tildes.append(M_tilde)
+        
+        # Extract R and t from M_tilde
+        R = M_tilde[:, :3]
+        t = M_tilde[:, 3]
+        
+        # Camera position in world frame
+        pos = -R.T @ t
+        translations[i] = pos
+        
+        # Camera orientation in world frame
+        rotMat = R.T
+        rot = Rotation.from_matrix(rotMat)
+        quat = rot.as_quat()  # x, y, z, w
+        quaternions[i] = quat
 
-    """ Remove this comment if you have completed the code until here
+
+    # Remove this comment if you have completed the code until here
     fps = 30
-    filename = "../motion.avi"
+    filename = "02_pnp_exercise/motion.avi"
     plotTrajectory3D(fps, filename, translations, quaternions, p_W_corners)
-    """
+    
 
 
 if __name__=="__main__":
     main()
-    """ Remove this comment if you have completed the code until here
+    #Remove this comment if you have completed the code until here
     main_video()
-    """
+    
